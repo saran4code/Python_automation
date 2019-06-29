@@ -1,0 +1,118 @@
+
+To setup Python environment -  Ref: https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
+------------------------------
+
+yum -y update	
+yum -y install yum-utils
+yum -y groupinstall "Development Tools"
+yum -y install https://centos7.iuscommunity.org/ius-release.rpm (ius - Inline with Upstream Stable, installs the stable version of python 3.6)
+yum -y install python36u
+python3.6 -V
+yum -y install python36u-pip  -> to install pip3.6 version
+yum -y install python36u-devel  -> development package for python3.6
+
+To create virtual environments
+--------------------------------
+mkdir virt_environments
+cd virt_environments
+python3.6 -m venv my_env  --> {venv= python command for virtual environment; my_env = custom name of the virtual environment}
+
+Following directory structure will be available after creating my_env
+bin include lib lib64 pyvenv.cfg
+
+To Activate my_env
+------------------
+
+source my_env/bin/activate
+(my_env) [root@centos1 packt_python]# pip3.6 install psutil <Install python packages within the virtual environment for testing purposes>
+
+To deactivate - 
+-------------
+# deactivate
+
+Issue encountered
+=================
+
+(myenv) [root@centos2 ~]# pip install paramiko
+pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available.
+Collecting paramiko
+  Could not fetch URL https://pypi.python.org/simple/paramiko/: There was a problem confirming the ssl certificate: Can't connect to HTTPS URL because the SSL module is not available. - skipping
+  Could not find a version that satisfies the requirement paramiko (from versions: )
+No matching distribution found for paramiko
+
+
+1. vim Python-3.6.4/Modules/Setup
+2. Uncomment certain SSL related entries
+---
+_ssl _ssl.c \
+-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+-L$(SSL)/lib -lssl -lcrypto
+---
+3. cd Python-3.6.4/
+4. make && make install --> To recompile
+
+5. pip install --upgrade pip  --> Upgrade pip to the latest version
+
+Installation of whois module (A Python module/library for retrieving WHOIS information of domains.)
+===========================
+
+pip3.6 install whois
+(my_env) [root@centos1 environments]# python3.6 whois_example.py 
+pythonforbeginners.com
+2012-09-15 20:41:46
+{'ns-1464.awsdns-55.org', 'ns-980.awsdns-58.net', 'ns-1840.awsdns-38.co.uk', 'ns-489.awsdns-61.com'}
+None
+
+
+Installation of Fabric module 
+===============================
+- > This is mainly used for system administration tasks (patching was done on uhura using fabric), leverages paramiko library for ssh. 
+
+pip install Fabric3
+
+Now create a python file (fabfile.py) that has the fabric.api package and necessary modules imported and contains the functions which fab can call. 
+
+from fabric.api import run  ##this is the package name and module
+
+for example - 
+
+def hello():
+    print("Hello World")
+
+By calling # fab hello
+it calls the function from fabfile.py and executes the task for us. Refer fabfile.py for other options. 
+
+
+Installation  of jinja2
+======================
+
+jinja2 is a template which can render what we want from the template. 
+
+####Example code####
+
+from jinja2 import Template
+
+template = Template('Hello {{ name }}!')
+print(template.render(name="Saran"))
+
+
+t = Template("My Favorite numbers: {% for n in range(1,10) %}{{n}}" "{% endfor %}")
+print(t.render())
+
+####Example code####
+
+
+pydev can be installed in eclipse by choosing the interpreter we want. 
+
+
+Install PSutil - to monitor system resources
+==============================================
+
+https://github.com/giampaolo/psutil
+
+
+
+
+
+
+
